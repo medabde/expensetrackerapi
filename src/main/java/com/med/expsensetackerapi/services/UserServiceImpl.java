@@ -18,7 +18,9 @@ public class UserServiceImpl implements  UserService{
 
     @Override
     public User validateUser(String email, String password) throws EtAuthException {
-        return null;
+        if(email!=null) email = email.toLowerCase();
+
+        return userRepository.findByEmailAndPassword(email,password);
     }
 
     @Override
@@ -32,5 +34,6 @@ public class UserServiceImpl implements  UserService{
         if (count>0) throw new EtAuthException("Email already in use");
         int userId = userRepository.create(fName, lName, email, password);
         return userRepository.findById(userId);
+//        return new User(1,"m","m","3","4");
     }
 }

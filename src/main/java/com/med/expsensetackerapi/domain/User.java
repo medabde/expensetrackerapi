@@ -1,7 +1,7 @@
 package com.med.expsensetackerapi.domain;
 
 public class User {
-    private int id;
+    private Integer id;
     private String fName;
     private String lName;
     private String email;
