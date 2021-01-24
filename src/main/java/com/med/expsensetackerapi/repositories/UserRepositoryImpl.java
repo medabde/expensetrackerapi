@@ -43,7 +43,6 @@ public class UserRepositoryImpl implements UserRepository {
                 },keyHolder);
             return (Integer) keyHolder.getKeys().get("user_id");
         }catch (Exception e){
-            System.out.println("the problem is +++++++++++ => "+e.getMessage());
             throw new EtAuthException("Invalid details. Failed to create account");
         }
 
