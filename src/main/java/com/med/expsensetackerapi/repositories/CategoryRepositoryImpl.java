@@ -27,6 +27,9 @@ public class CategoryRepositoryImpl implements CategoryRepository {
             "COALESCE(SUM(t.amount),0) total_expense " +
             "FROM et_transactions t RIGHT OUTER JOIN et_categories c ON c.category_id = t.category_id " +
             "WHERE c.user_id = ? GROUP BY c.category_id";
+    private static final String SQL_UPDATE = "UPDATE et_categories SET title=?,description=? " +
+            "WHERE user_id=? AND category_id=?";
+
     @Autowired
     JdbcTemplate jdbcTemplate;
 
@@ -64,6 +67,13 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
     @Override
     public void update(Integer userId, Integer categoryId, Category category) throws EtBadRequestException {
+        try{
+
+            jdbcTemplate.update(SQL_UPDATE, category.getTitle(),category.getDescription(),userId,categoryId);
+
+        }catch (Exception e){
+            throw new EtBadRequestException("Invalid request");
+        }
 
     }
 
