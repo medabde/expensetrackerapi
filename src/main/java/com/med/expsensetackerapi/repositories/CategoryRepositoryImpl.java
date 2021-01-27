@@ -29,6 +29,8 @@ public class CategoryRepositoryImpl implements CategoryRepository {
             "WHERE c.user_id = ? GROUP BY c.category_id";
     private static final String SQL_UPDATE = "UPDATE et_categories SET title=?,description=? " +
             "WHERE user_id=? AND category_id=?";
+    private static final String SQL_DELETE_CATEGORY = "DELETE FROM et_categories WHERE user_id=? AND category_id=?";
+    private static final String SQL_DELETE_ALL_TRANSACTIONS = "DELETE FROM et_transactions WHERE user_id=? AND category_id=?";
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -79,7 +81,11 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
     @Override
     public void removeById(Integer userId, Integer categoryId) {
-
+        removeAllCatTransactions(userId,categoryId);
+        jdbcTemplate.update(SQL_DELETE_CATEGORY,userId,categoryId);
+    }
+    private void removeAllCatTransactions(Integer userId,Integer categoryId){
+        jdbcTemplate.update(SQL_DELETE_ALL_TRANSACTIONS,userId,categoryId);
     }
 
     private final RowMapper<Category> categoryRowMapper = ((resultSet, i) -> new Category(resultSet.getInt("category_id"),
